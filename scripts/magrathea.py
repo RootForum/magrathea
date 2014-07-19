@@ -25,7 +25,7 @@ def main():
         sys.path.insert(0, magrathea_path)
 
     import magrathea.cli
-    return magrathea.cli.dispatch(os.path.realpath(__file__), sys.argv)
+    return magrathea.cli.execute()
 
 
 if __name__ == '__main__':
