@@ -7,9 +7,9 @@
     :license: MIT License, see LICENSE for details.
 """
 
-from magrathea.conf import default
-from magrathea.utils.dynamic import DynamicIterable
-from magrathea.utils.singleton import Singleton
+from . import default
+from ..utils.dynamic import DynamicIterable
+from ..utils.singleton import Singleton
 
 
 def get_conf(key):
@@ -19,7 +19,7 @@ def get_conf(key):
     :param str key: string identifying the requested configuration value
     :returns the requested configuration value or None
     """
-    configuration = MagratheaConf.get_instance()
+    configuration = ApplicationConf.get_instance()
     if key.upper() in configuration:
         return configuration[key.upper()]
     else:
@@ -27,14 +27,14 @@ def get_conf(key):
 
 
 @Singleton
-class MagratheaConf(DynamicIterable):
+class ApplicationConf(DynamicIterable):
     """
     Global Magrathea configuration object.
 
     This class acts as a proxy to all configuration information set in
     :py:mod:`~magrathea.conf.default`. The configuration data can be
-    accessed either as :py:func:`property` of the :py:class:`~magrathea.conf.MagratheaConf`
-    object, or as *(key, value)* pair via the :py:class:`~magrathea.conf.MagratheaConf`
+    accessed either as :py:func:`property` of the :py:class:`~magrathea.conf.ApplicationConf`
+    object, or as *(key, value)* pair via the :py:class:`~magrathea.conf.ApplicationConf`
     dictionary interface.
 
     .. note::
@@ -47,7 +47,7 @@ class MagratheaConf(DynamicIterable):
 
     Example::
 
-       configuration = MagratheaConf.get_instance()
+       configuration = ApplicationConf.get_instance()
     """
 
     def __init__(self):
