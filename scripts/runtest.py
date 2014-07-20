@@ -16,6 +16,24 @@ import sys
 import unittest
 
 
+def __get_version(version=None):
+    """Derive a PEP386-compliant version number from VERSION."""
+    version = version or sys.version_info
+    assert len(version) == 5
+    assert version[3] in ('alpha', 'beta', 'rc', 'final')
+    parts = 2 if version[2] == 0 else 3
+    main_part = '.'.join(str(x) for x in version[:parts])
+
+    sub = ''
+    if version[3] == 'alpha' and version[4] == 0:
+        sub = '.dev'
+    elif version[3] != 'final':
+        mapping = {'alpha': 'a', 'beta': 'b', 'rc': 'c'}
+        sub = mapping[version[3]] + str(version[4])
+
+    return main_part + sub
+
+
 def __filter_files(item):
     """
     Filter for Python modules beginning with *test_*
@@ -101,7 +119,7 @@ def main():
     total_failed = 0
     total_skipped = 0
 
-    print("\nMagrathea Unit Test Result Summary:\n")
+    print("\nMagrathea Unit Test Result Summary:\n\nPython version: {}\n".format(__get_version()))
     print("Test                   Passed   Failed   Skipped   Total    % passed")
     print("====================================================================")
     for key in sorted(results):
