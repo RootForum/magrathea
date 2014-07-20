@@ -142,15 +142,15 @@ def main():
     total_skipped = 0
 
     print("\nMagrathea Unit Test Result Summary:\n\nPython version: {}\n".format(__get_version()))
-    print("Test                             Passed   Failed   Skipped   Total    % passed")
-    print("==============================================================================")
+    print("Test                               Passed   Failed   Skipped   Total    % passed")
+    print("================================================================================")
     for key in sorted(results):
         total_tests += results[key][2]
         total_skipped += results[key][1]
         total_failed += results[key][0]
         total_passed = total_tests - total_failed - total_skipped
         print(
-            "{test: <30}      {passed: >3d}      {failed: >3d}      {skipped: >4d}     {total: >3d}     {ratio: >3.2%}".format(
+            "{test: <32}      {passed: >3d}      {failed: >3d}      {skipped: >4d}     {total: >3d}     {ratio: >3.2%}".format(
             test=key,
             passed=results[key][2]-results[key][0]-results[key][1],
             failed=results[key][0],
@@ -158,8 +158,8 @@ def main():
             total=results[key][2],
             ratio=float(results[key][2]-results[key][0]-results[key][1])/float(results[key][2]-results[key][1])
         ))
-    print("==============================================================================")
-    print("{test: <30}      {passed: >3d}      {failed: >3d}      {skipped: >4d}     {total: >3d}     {ratio: >3.2%}\n".format(
+    print("================================================================================")
+    print("{test: <32}      {passed: >3d}      {failed: >3d}      {skipped: >4d}     {total: >3d}     {ratio: >3.2%}\n".format(
         test="TOTAL",
         passed=total_passed,
         failed=total_failed,

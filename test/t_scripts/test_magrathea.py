@@ -12,7 +12,7 @@ import os
 from unittest import TestCase
 
 
-class TestMagratheaScript(TestCase):
+class Test_scripts_magrathea(TestCase):
     """
     Unit tests for ``scripts/magrathea.py``
     """
