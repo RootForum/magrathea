@@ -41,3 +41,6 @@ DEFAULT_LOG_FACILITY = 'LOG_USER'
 
 # Default timestamp format for file logging
 DEFAULT_LOG_TIMESTAMP = '%Y-%m-%d %H:%M:%S'
+
+# By default, use colors for logging where available
+DEFAULT_LOG_COLOR = True
