@@ -6,8 +6,7 @@
     :copyright: Copyright 2014 by the RootForum.org team, see AUTHORS.
     :license: ISC License, see LICENSE for details.
 """
-
-from collections import UserDict
+from collections import OrderedDict
 
 
 class Dynamic(object):
@@ -37,7 +36,7 @@ class Dynamic(object):
         return getattr(self, '_' + name)
 
 
-class DynamicIterable(UserDict):
+class DynamicIterable(OrderedDict):
     """
     A dynamic iterable object is similar to a normal Python dictionary, except it offers
     all keys also as properties.
@@ -63,7 +62,7 @@ class DynamicIterable(UserDict):
         """
         delattr(self.__class__, name)
 
-    def __setitem__(self, key, item):
+    def __setitem__(self, key, item, **kwargs):
         """
         Overrides default ``__setitem__`` method. Functionality is identical, except a property with
         the key name is created or updated.
@@ -71,7 +70,7 @@ class DynamicIterable(UserDict):
         self.__add_property(key, item)
         super(DynamicIterable, self).__setitem__(key, item)
 
-    def __delitem__(self, key):
+    def __delitem__(self, key, **kwargs):
         """
         Overrides default ``__delitem__`` method. Functionality is identical, the property with
         the key name is deleted.
