@@ -11,7 +11,7 @@ import sys
 from magrathea.utils.convert import to_bytes, to_str
 
 
-class Test_magrathea_utils_convert(TestCase):
+class TestMagratheaUtilsConvert(TestCase):
     """
     Unit tests for :py:mod:`magrathea.utils.convert`
     """
