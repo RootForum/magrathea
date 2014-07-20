@@ -101,6 +101,7 @@ def main():
 
     results = {}
     skipped = []
+    failed = []
 
     # Create a unittest runner and run all detected tests
     runner = unittest.TextTestRunner(stream=open('/dev/null', 'w'))
@@ -109,7 +110,28 @@ def main():
         result = runner.run(suite)
         if result.skipped:
             for test in result.skipped:
-                skipped.append((test_class.__name__, test[0], test[1]))
+                skipped.append((
+                    test_class.__name__,
+                    test[0],
+                    test[1],
+                    getattr(getattr(test_class, str(test[0]).split(" ")[0]), '__doc__').splitlines()[2].strip()
+                ))
+        if result.failures:
+            for test in result.failures:
+                failed.append((
+                    test_class.__name__,
+                    test[0],
+                    test[1],
+                    getattr(getattr(test_class, str(test[0]).split(" ")[0]), '__doc__').splitlines()[2].strip()
+                ))
+        if result.errors:
+            for test in result.errors:
+                failed.append((
+                    test_class.__name__,
+                    test[0],
+                    test[1],
+                    getattr(getattr(test_class, str(test[0]).split(" ")[0]), '__doc__').splitlines()[2].strip()
+                ))
         results[test_class.__name__] = (len(result.failures) + len(result.errors), len(result.skipped), result.testsRun)
         if result.failures or result.errors:
             return_code = os.EX_SOFTWARE
@@ -134,7 +156,7 @@ def main():
             failed=results[key][0],
             skipped=results[key][1],
             total=results[key][2],
-            ratio=(results[key][2]-results[key][0]-results[key][1])/(results[key][2]-results[key][1])
+            ratio=float(results[key][2]-results[key][0]-results[key][1])/float(results[key][2]-results[key][1])
         ))
     print("====================================================================")
     print("{test: <20}      {passed: >3d}      {failed: >3d}      {skipped: >4d}     {total: >3d}     {ratio: >3.2%}\n".format(
@@ -143,7 +165,7 @@ def main():
         failed=total_failed,
         skipped=total_skipped,
         total=total_tests,
-        ratio=total_passed/(total_tests-total_skipped)
+        ratio=float(total_passed)/float(total_tests-total_skipped)
     ))
     if skipped:
         print('Skipped Test Cases:\n')
@@ -152,6 +174,16 @@ def main():
                 module=skip[0],
                 test=' '.join(str(skip[1]).split(" ")[0].split('_')),
                 reason=skip[2].strip())
+            )
+
+    if failed:
+        print('Failed Test Cases:\n')
+        for fail in failed:
+            print('   {module} {test}: {name}'.format(
+                module=fail[0],
+                test=' '.join(str(fail[1]).split(" ")[0].split('_')),
+                name=fail[3]
+            )
             )
 
     if total_passed < (total_tests - total_skipped):
