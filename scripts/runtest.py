@@ -149,6 +149,10 @@ def main():
         total_skipped += results[key][1]
         total_failed += results[key][0]
         total_passed = total_tests - total_failed - total_skipped
+        try:
+            ratio = float(results[key][2] - results[key][0] - results[key][1]) / float(results[key][2] - results[key][1])
+        except ZeroDivisionError:
+            ratio = 1
         print(
             "{test: <32}      {passed: >3d}      {failed: >3d}      {skipped: >4d}     {total: >3d}     {ratio: >3.2%}".format(
             test=key,
@@ -156,16 +160,20 @@ def main():
             failed=results[key][0],
             skipped=results[key][1],
             total=results[key][2],
-            ratio=float(results[key][2]-results[key][0]-results[key][1])/float(results[key][2]-results[key][1])
+            ratio=ratio
         ))
     print("================================================================================")
+    try:
+        ratio = float(total_passed) / float(total_tests-total_skipped)
+    except ZeroDivisionError:
+        ratio = 1
     print("{test: <32}      {passed: >3d}      {failed: >3d}      {skipped: >4d}     {total: >3d}     {ratio: >3.2%}\n".format(
         test="TOTAL",
         passed=total_passed,
         failed=total_failed,
         skipped=total_skipped,
         total=total_tests,
-        ratio=float(total_passed)/float(total_tests-total_skipped)
+        ratio=ratio
     ))
     if skipped:
         print('Skipped Test Cases:\n')
