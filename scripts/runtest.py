@@ -177,7 +177,10 @@ def main():
             )
 
     if failed:
-        print('Failed Test Cases:\n')
+        if skipped:
+            print('\nFailed Test Cases:\n')
+        else:
+            print('Failed Test Cases:\n')
         for fail in failed:
             print('   {module} {test}: {name}'.format(
                 module=fail[0],
