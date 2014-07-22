@@ -56,6 +56,7 @@ def detect_class_modules(module, parent=object):
 
     # initialise result dictionary
     result = {}
+    candidates = []
 
     # get a list of all files and directories inside the module
     try:
@@ -64,33 +65,38 @@ def detect_class_modules(module, parent=object):
         return result
 
     if package_instance.__file__[-11:] == '__init__.py':
+        # it's a package, so we have to look for modules
         gen_dir = os.listdir(os.path.dirname(os.path.realpath(package_instance.__file__)))
+
+        # only consider modules and packages, and exclude the base module
+        for file_candidate in filter(__filter_modules, gen_dir):
+
+            # Python files are modules; the name needs to be without file ending
+            if file_candidate[-3:] == '.py':
+                file_candidate = file_candidate[:-3]
+
+            # try if the detected package or module can be imported
+            try:
+                class_module_candidate = importlib.import_module('.'.join([module, file_candidate]))
+            except ImportError:
+                class_module_candidate = None
+
+            # if the module or module could be imported, append it to the list of candidate modules.
+            if class_module_candidate:
+                candidates.append(class_module_candidate)
     else:
-        gen_dir = [os.path.realpath(package_instance.__file__)]
+        candidates.append(package_instance)
 
-    # only consider modules and packages, and exclude the base module
-    for file_candidate in filter(__filter_modules, gen_dir):
-
-        # Python files are modules; the name needs to be without file ending
-        if file_candidate[-3:] == '.py':
-            file_candidate = file_candidate[:-3]
-
-        # try if the detected package or module can be imported
-        try:
-            class_module_candidate = importlib.import_module('.'.join([module, file_candidate]))
-        except ImportError:
-            class_module_candidate = None
-
-        # if the module or module could be imported, test if it contains
-        # classes derived from the parent class
-        if class_module_candidate:
-            for member_candidate in filter(__filter_members, dir(class_module_candidate)):
-                try:
-                    if issubclass(getattr(class_module_candidate, member_candidate), parent) \
-                       and getattr(class_module_candidate, member_candidate).__name__ != parent.__name__:
-                        result[member_candidate] = class_module_candidate.__name__
-                except TypeError:
-                    pass
+    # test if any of the candidates contain
+    # classes derived from the parent class
+    for candidate in candidates:
+        for member_candidate in filter(__filter_members, dir(candidate)):
+            try:
+                if issubclass(getattr(candidate, member_candidate), parent) \
+                   and getattr(candidate, member_candidate).__name__ != parent.__name__:
+                    result[member_candidate] = candidate.__name__
+            except TypeError:
+                pass
 
     # return the dictionary
     return result
