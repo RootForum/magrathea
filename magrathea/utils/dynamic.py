@@ -4,7 +4,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~
 
     :copyright: Copyright 2014 by the RootForum.org team, see AUTHORS.
-    :license: ISC License, see LICENSE for details.
+    :license: MIT License, see LICENSE for details.
 """
 import sys
 if sys.version_info >= (3, 0, 0):
