@@ -6,7 +6,11 @@
     :copyright: Copyright 2014 by the RootForum.org team, see AUTHORS.
     :license: ISC License, see LICENSE for details.
 """
-from collections import OrderedDict
+import sys
+if sys.version_info >= (3, 0, 0):
+    from collections import UserDict
+else:
+    from UserDict import UserDict
 
 
 class Dynamic(object):
@@ -36,10 +40,15 @@ class Dynamic(object):
         return getattr(self, '_' + name)
 
 
-class DynamicIterable(OrderedDict):
+class DynamicIterable(UserDict, object):
     """
     A dynamic iterable object is similar to a normal Python dictionary, except it offers
     all keys also as properties.
+
+    .. note::
+
+       Since :py:class:`~UserDict.UserDict` in Python 2.x is an old-style class, this class
+       also inherits from `object` to become a new style class.
 
     :param dict dict: dictionary with initial data to be filled in
     :param kwargs:    keyword arguments to be transformed into dictionary data
