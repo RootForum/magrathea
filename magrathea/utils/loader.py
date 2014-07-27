@@ -64,7 +64,8 @@ def detect_class_modules(module, parent=object):
     except ImportError:
         return result
 
-    if package_instance.__file__[-11:] == '__init__.py':
+    pkg_file = os.path.splitext(package_instance.__file__)
+    if pkg_file[0][-8:] == '__init__' and pkg_file[1][1:3] == 'py':
         # it's a package, so we have to look for modules
         gen_dir = os.listdir(os.path.dirname(os.path.realpath(package_instance.__file__)))
 
