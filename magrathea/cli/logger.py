@@ -11,6 +11,7 @@ import sys
 import syslog
 from datetime import datetime
 from ..conf import get_conf
+from ..utils.file import open_file
 from ..utils.singleton import Singleton
 from ..utils import termcolor
 from ..utils.timer import counter
@@ -132,9 +133,9 @@ class Logger(object):
     def _flush_file(self):
         """Flush implementation for file logging (lazy)"""
         if not self._fp_std:
-            self._fp_std = open(self._logfile, encoding=get_conf('DEFAULT_CHARSET'), mode='a+')
+            self._fp_std = open_file(self._logfile, encoding=get_conf('DEFAULT_CHARSET'), mode='a+')
         padding = len("[{}] [     ]".format(datetime.now().strftime(get_conf('DEFAULT_LOG_TIMESTAMP')))) * " "
-        queue = dict(**self._queue['err'])
+        queue = dict(self._queue['err'])
         queue.update(self._queue['std'])
         for msg in sorted(queue.keys()):
             msg_lines = queue[msg][1].splitlines()
