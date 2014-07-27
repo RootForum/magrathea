@@ -10,7 +10,7 @@ import sys
 from ..conf import get_conf
 
 
-def open_file(file, mode='r'):
+def open_file(file, mode='r', encoding=None):
     """
     Open a file and return a corresponding file object
 
@@ -21,4 +21,5 @@ def open_file(file, mode='r'):
     if sys.version_info < (3, 0, 0):
         return open(file, mode=mode)
     else:
-        return open(file, mode=mode, encoding=get_conf('DEFAULT_CHARSET'))
+        encoding = encoding or get_conf('DEFAULT_CHARSET')
+        return open(file, mode=mode, encoding=encoding)
