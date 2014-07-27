@@ -105,16 +105,16 @@ def get_git_changeset(path=None):
         path = os.path.normpath(os.path.join(magrathea.__path__[0], ".."))
 
     # run `git show` in ControlBeast's root directory and grab its output from stdout
+    git_show = subprocess.Popen(
+        'git show --pretty=format:%ct --quiet HEAD',
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        shell=True,
+        cwd=path,
+        universal_newlines=True
+    )
     try:
-        with subprocess.Popen(
-            'git show --pretty=format:%ct --quiet HEAD',
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            shell=True,
-            cwd=path,
-            universal_newlines=True
-        ) as git_show:
-            timestamp = to_str(git_show.communicate()[0]).partition('\n')[0]
+        timestamp = to_str(git_show.communicate()[0]).partition('\n')[0]
     except OSError:
         timestamp = None
 
