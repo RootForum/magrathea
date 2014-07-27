@@ -48,10 +48,24 @@ class BaseCommand(object):
         self._global_args = global_args
         self._cmd_args = cmd_args
         self._logger = logger
-        if 'dir' in self._global_args and self._global_args.dir:
-            self._working_directory = self._global_args.dir
+        if self.get_global_argument('dir'):
+            self._working_directory = self.get_global_argument('dir')
         else:
             self._working_directory = os.path.normpath(os.path.curdir)
+
+    def get_global_argument(self, name):
+        """Get a global argument value"""
+        if self._global_args and name in self._global_args and hasattr(self._global_args, name):
+            return getattr(self._global_args, name)
+        else:
+            return None
+
+    def get_command_argument(self, name):
+        """Get a command argument value"""
+        if self._cmd_args and name in self._cmd_args and hasattr(self._cmd_args, name):
+            return getattr(self._cmd_args, name)
+        else:
+            return None
 
     def log_error(self, message):
         """Error logging short cut method for convenience"""
