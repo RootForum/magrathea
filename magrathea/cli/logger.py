@@ -6,13 +6,14 @@
     :copyright: Copyright 2014 by the RootForum.org team, see AUTHORS.
     :license: MIT License, see LICENSE for details.
 """
-import time
+from __future__ import print_function
 import sys
 import syslog
 from datetime import datetime
 from ..conf import get_conf
 from ..utils.singleton import Singleton
 from ..utils import termcolor
+from ..utils.timer import counter
 
 
 Levels = {
@@ -160,13 +161,13 @@ class Logger(object):
         # log usage messages only on a terminal
         if level == 'usage':
             if self._type == 'term':
-                self._queue['err'][time.perf_counter()] = (level, message)
+                self._queue['err'][counter()] = (level, message)
         # otherwise, log messages if their level is appropriate
         if level in self._levels and self._levels[self._level][0] >= self._levels[level][0]:
             if level == 'error':
-                self._queue['err'][time.perf_counter()] = (level, message)
+                self._queue['err'][counter()] = (level, message)
             else:
-                self._queue['std'][time.perf_counter()] = (level, message)
+                self._queue['std'][counter()] = (level, message)
         self._flush()
 
     def log_error(self, message):
