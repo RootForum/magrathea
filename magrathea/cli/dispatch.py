@@ -223,8 +223,8 @@ class CommandDispatcher(object):
         """
 
         # check if the user asks for help
-        if any(help in self._global_args for help in ['-h', '--help', 'help']) \
-                or any(help in self._command_args for help in ['-h', '--help', 'help']):
+        if any(help_indicator in self._global_args for help_indicator in ['-h', '--help', 'help']) \
+                or any(help_indicator in self._command_args for help_indicator in ['-h', '--help', 'help']):
             self.help()
             return
 
