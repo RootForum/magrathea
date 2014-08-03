@@ -30,7 +30,21 @@ Levels = {
 @Singleton
 class Logger(object):
     """
-    Class providing the output interface
+    Class providing the output interface for various output channels. Currently,
+    supported output channels are
+
+    * the terminal (stdout and stderr)
+    * files accessible through the local file system
+    * the syslog service
+
+    .. note::
+
+       Please note that the :py:class:`~magrathea.cli.logger.Logger` class is a
+       decorated singleton, which means instances cannot be retrieved directly,
+       but must be obtained using the :py:meth:`~magrathea.cli.logger.Logger.get_instance`
+       method.
+
+    The following key word arguments are understood:
 
     :param str type:     Type of this logger. Must be one of `file`, `syslog` or `term`.
     :param str level:    Minimum level for logging. Must be one of `mute`, `error`, `warning`, `info` or `debug`.
