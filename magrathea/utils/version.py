@@ -25,7 +25,7 @@ def get_version(*args, **kwargs):
         version = magrathea.VERSION
 
     assert len(version) == 5
-    assert version[3] in ('alpha', 'beta', 'rc', 'final')
+    assert version[3] in ('alpha', 'beta', 'candidate', 'final')
 
     # Now build the two parts of the version number:
     # main = X.Y[.Z]
@@ -44,7 +44,7 @@ def get_version(*args, **kwargs):
             sub = '.dev'
 
     elif version[3] != 'final':
-        mapping = {'alpha': 'a', 'beta': 'b', 'rc': 'c'}
+        mapping = {'alpha': 'a', 'beta': 'b', 'candidate': 'c'}
         sub = mapping[version[3]] + str(version[4])
 
     return main + sub
@@ -76,14 +76,14 @@ def get_development_status(*args, **kwargs):
     else:
         version = magrathea.VERSION
     assert len(version) == 5
-    assert version[3] in ('alpha', 'beta', 'rc', 'final')
+    assert version[3] in ('alpha', 'beta', 'candidate', 'final')
 
     agent = 1
     if version[3] == 'alpha' and version[4] == 0:
         agent = 2
     elif version[3] == 'alpha' and version[4] > 0:
         agent = 3
-    elif version[3] in ('beta', 'rc'):
+    elif version[3] in ('beta', 'candidate'):
         agent = 4
     elif version[3] == 'final':
         agent = 5
