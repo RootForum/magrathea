@@ -19,28 +19,27 @@
 # CORE Settings
 ###############
 
-# Default character set to be used for any byte sequence or
-# string conversion operations
+#: Default character set to be used for any byte sequence or string conversion operations
 DEFAULT_CHARSET = 'utf-8'
 
 
 # LOGGING
 #########
 
-# Default log type
+#: Default log type
 DEFAULT_LOG_TYPE = 'term'
 
-# Default log level
+#: Default log level
 DEFAULT_LOG_LEVEL = 'notice'
 
-# Default log file
+#: Default log file
 DEFAULT_LOG_FILE = '/var/log/magrathea.log'
 
-# Default syslog facility
+#: Default syslog facility
 DEFAULT_LOG_FACILITY = 'LOG_USER'
 
-# Default timestamp format for file logging
+#: Default timestamp format for file logging
 DEFAULT_LOG_TIMESTAMP = '%Y-%m-%d %H:%M:%S'
 
-# By default, use colors for logging where available
+#: By default, use colors for logging where available
 DEFAULT_LOG_COLOR = True

@@ -6,3 +6,4 @@ Magrathea API Documentation
    :maxdepth: 2
 
    cli
+   conf

@@ -17,7 +17,7 @@ def get_conf(key):
     Get a global configuration value by its key.
 
     :param str key: string identifying the requested configuration value
-    :returns the requested configuration value or None
+    :returns: the requested configuration value or None
     """
     configuration = ApplicationConf.get_instance()
     if key.upper() in configuration:
@@ -50,7 +50,7 @@ class ApplicationConf(DynamicIterable):
        configuration = ApplicationConf.get_instance()
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
 
         # ensure the constructor of the CbDynamicIterable parent side is called
         super(DynamicIterable, self).__init__(dict=None)

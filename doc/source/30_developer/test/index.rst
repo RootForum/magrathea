@@ -6,3 +6,4 @@ Magrathea Unit Test Documentation
    :maxdepth: 2
 
    t_cli
+   t_conf
