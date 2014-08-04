@@ -31,7 +31,7 @@ class TestScriptsMagrathea(TestCase):
 
     @skipIf(sys.version_info >= (3, 4, 0), "Module `imp` has been deprecated with Python 3.4")
     @skipIf(skip_imp, "Module `imp` is not available")
-    def test_01_import(self):
+    def test_01(self):
         """
         Test Case 01:
         Try importing the magrathea script (Python<=3.3).

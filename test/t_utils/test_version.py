@@ -77,7 +77,7 @@ class TestMagratheaUtilsVersion(TestCase):
 
         Test is passed if returned result meets expected string
         """
-        version = (0, 1, 0, 'rc', 1)
+        version = (0, 1, 0, 'candidate', 1)
         result = get_version(version=version)
         self.assertEqual(result, '0.1c1')
 
@@ -176,7 +176,7 @@ class TestMagratheaUtilsVersion(TestCase):
 
         Test is passed if returned result meets expected string
         """
-        version = (0, 1, 0, 'rc', 1)
+        version = (0, 1, 0, 'candidate', 1)
         result = get_development_status(version=version)
         self.assertEqual(result, 'Development Status :: 4 - Beta')
 

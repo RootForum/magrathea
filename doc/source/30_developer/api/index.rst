@@ -7,3 +7,4 @@ Magrathea API Documentation
 
    cli
    conf
+   utils/index

@@ -33,7 +33,7 @@ Class Interface
 
       .. note::
 
-         Although the :py:meth:`~magrathea.conf.ApplicationConf.get_instance` accepts arbitrary
+         Although the :py:meth:`~magrathea.conf.ApplicationConf.get_instance` method accepts arbitrary
          positional and keyword arguments, they will be ignored by the constructor.
 
 

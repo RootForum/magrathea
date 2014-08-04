@@ -7,3 +7,4 @@ Magrathea Unit Test Documentation
 
    t_cli
    t_conf
+   t_utils/index
