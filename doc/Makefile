@@ -49,6 +49,8 @@ help:
 clean:
 	rm -rf $(BUILDDIR)/*
 
+magdoc: html man latexpdf
+
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
