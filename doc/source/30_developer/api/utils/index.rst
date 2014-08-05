@@ -11,3 +11,8 @@ Utility Modules
    convert
    dynamic
    file
+   loader
+   singleton
+   termcolor
+   timer
+   version
