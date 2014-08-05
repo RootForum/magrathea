@@ -52,6 +52,8 @@ def detect_class_modules(module, parent=object):
 
     :param str module: the module or package to be scanned for classes
     :param parent: the class potential candidates must be derived off
+    :returns: dictionary of detected classes, mapping the class name to the module name in
+              which the class has been detected
     """
 
     # initialise result dictionary
@@ -109,6 +111,7 @@ def load_member(module, member):
 
     :param str module: the module or package name where the class should be loaded from
     :param str member: the name of the member to be loaded
+    :returns: reference to the loaded member (i. e. class or function pointer)
     """
     try:
         module = importlib.import_module(module)
