@@ -19,10 +19,20 @@ Development Procedures
 .. toctree::
    :maxdepth: 1
 
-   style
-   git
-   version
-   release
+   10_procedures/style
+   10_procedures/git
+   10_procedures/version
+   10_procedures/release
+
+
+Specification
+-------------
+
+.. toctree::
+   :maxdepth: 1
+
+   20_specification/structure
+   20_specification/planetconf
 
 
 API Documentation
@@ -31,5 +41,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   api/index
-   test/index
+   30_api/index
+   40_test/index
