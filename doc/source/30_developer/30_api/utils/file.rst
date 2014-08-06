@@ -4,6 +4,9 @@ File Utility
 .. module:: magrathea.utils.file
    :synopsis: file utility
 
+:py:func:`open` Wrapper
+-----------------------
+
 The file utility offers a simple wrapper for Python's :py:func:`open` function.
 Wrapping the :py:func:`open` function has become necessary since Python 2 and
 Python 3 provide different implementations of :py:func:`open`. Most notably, the
@@ -20,3 +23,15 @@ of the file descriptor returned by this wrapper function.
 .. py:currentmodule:: magrathea.utils.file
 
 .. autofunction:: magrathea.utils.file.open_file
+
+
+File Meta Class
+---------------
+
+To ease file system operations, the file utility also offers a meta class, equipping
+classes with some static helper methods for frequently needed tasks, such as checking
+whether a file exists, or if it can be accessed in a specific mode.
+
+.. autoclass:: magrathea.utils.file.File
+   :members:
+   :private-members:
