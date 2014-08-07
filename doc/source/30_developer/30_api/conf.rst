@@ -66,3 +66,92 @@ Logging Settings
 .. autodata:: magrathea.conf.default.DEFAULT_LOG_TIMESTAMP
 
 .. autodata:: magrathea.conf.default.DEFAULT_LOG_COLOR
+
+
+Planet Structure
+~~~~~~~~~~~~~~~~
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_THEME_DIR
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_BUILD_DIR
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_FILE
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CACHE_FILE
+
+
+Planet Configuration
+~~~~~~~~~~~~~~~~~~~~
+
+Configuration Keys
+^^^^^^^^^^^^^^^^^^
+
+Global Keys
+```````````
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_THEME_KEY
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_POLICY_KEY
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_LIMIT_KEY
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_PAGINATE_KEY
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_THEME_DIR_KEY
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_BUILD_DIR_KEY
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_CACHE_FILE_KEY
+
+Per Feed Keys
+`````````````
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_FEED_AUTHOR_KEY
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_FEED_TITLE_KEY
+
+Configuration Defaults
+^^^^^^^^^^^^^^^^^^^^^^
+
+Global Defaults
+```````````````
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_THEME_VAL
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_POLICY_VAL
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_LIMIT_VAL
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_PAGINATE_VAL
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_THEME_DIR_VAL
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_BUILD_DIR_VAL
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_CACHE_FILE_VAL
+
+Per Feed Defaults
+`````````````````
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_FEED_AUTHOR_VAL
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_FEED_TITLE_VAL
+
+Policy Values
+^^^^^^^^^^^^^
+
+Allowed values for :py:data:`~magrathea.conf.default.DEFAULT_PLANET_CONF_POLICY_VAL`:
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_POLICY_VAL_GLOBAL
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_POLICY_VAL_LOCAL
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_POLICY_VAL_HOURS
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_POLICY_VAL_DAYS
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_POLICY_VAL_WEEKS
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_POLICY_VAL_MONTHS
+
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_CONF_POLICY_VAL_NONE

@@ -4,7 +4,7 @@ Magrathea Planet Directory Structure
 Each planet built and maintained by Magrathea is stored within a dedicated directory.
 By convention, this directory will contain the following elements:
 
-* ``planet.conf`` -- configuration file for the planet
+* ``planet.ini`` -- configuration file for the planet
 * ``cache.db`` -- persistent cache representation (may have a different file suffix)
 * ``themes/`` -- directory containing custom themes
 * ``build/`` -- directory containing the built planet
