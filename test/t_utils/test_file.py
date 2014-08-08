@@ -9,6 +9,7 @@
 import os
 import tempfile
 from unittest import TestCase, skipUnless, skipIf
+import sys
 from magrathea.utils.file import open_file, File
 
 
@@ -17,19 +18,33 @@ class TestMagratheaUtilsFile(TestCase):
     Unit tests for :py:mod:`magrathea.utils.file`
     """
 
-    def test_01(self):
+    @skipUnless(hasattr(TestCase, 'assertWarns'), "TestCase.assertWarns not available")
+    def test_01a(self):
         """
-        Test Case 01:
+        Test Case 01a:
         Try opening an existing file using the :py:func:`magrathea.utils.file.open_file` function.
 
-        Test is passed if a deprecation warning is raised, content can be read from file object
-        and meets expectation.
+        Test is passed if a deprecation warning is raised.
         """
         fp, name = tempfile.mkstemp()
         os.write(fp, b"test string")
         os.close(fp)
         with self.assertWarns(DeprecationWarning):
             fd = open_file(name, 'r')
+        fd.close()
+        os.unlink(name)
+
+    def test_01b(self):
+        """
+        Test Case 01b:
+        Try opening an existing file using the :py:func:`magrathea.utils.file.open_file` function.
+
+        Test is passed if content can be read from file object and meets expectation.
+        """
+        fp, name = tempfile.mkstemp()
+        os.write(fp, b"test string")
+        os.close(fp)
+        fd = open_file(name, 'r')
         result = fd.read()
         fd.close()
         os.unlink(name)
