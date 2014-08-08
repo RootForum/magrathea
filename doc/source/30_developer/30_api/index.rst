@@ -8,4 +8,5 @@ Magrathea API Documentation
    magrathea
    cli
    conf
+   core/index
    utils/index

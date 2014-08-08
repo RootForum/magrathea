@@ -6,6 +6,8 @@
     :copyright: Copyright 2014 by the RootForum.org team, see AUTHORS.
     :license: MIT License, see LICENSE for details.
 """
+import os
+
 
 # This file contains all default settings used anywhere in the Magrathea code.
 # As a matter of principle, all settings can be overridden (where it makes
@@ -21,6 +23,9 @@
 
 #: Default character set to be used for any byte sequence or string conversion operations
 DEFAULT_CHARSET = 'utf-8'
+
+#: Default location for templates
+DEFAULT_TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates')
 
 
 # LOGGING

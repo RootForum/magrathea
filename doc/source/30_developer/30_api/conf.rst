@@ -51,6 +51,8 @@ Core Settings
 
 .. autodata:: magrathea.conf.default.DEFAULT_CHARSET
 
+.. autodata:: magrathea.conf.default.DEFAULT_TEMPLATE_PATH
+
 
 Logging Settings
 ~~~~~~~~~~~~~~~~
