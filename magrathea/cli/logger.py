@@ -7,11 +7,12 @@
     :license: MIT License, see LICENSE for details.
 """
 from __future__ import print_function
+from __future__ import unicode_literals
 import sys
 import syslog
 from datetime import datetime
 from ..conf import get_conf
-from ..utils.file import open_file
+from ..utils.compat import comp_open
 from ..utils.singleton import Singleton
 from ..utils import termcolor
 from ..utils.timer import counter
@@ -147,12 +148,14 @@ class Logger(object):
     def _flush_file(self):
         """Flush implementation for file logging (lazy)"""
         if not self._fp_std:
-            self._fp_std = open_file(self._logfile, encoding=get_conf('DEFAULT_CHARSET'), mode='a+')
+            self._fp_std = comp_open(self._logfile, encoding=get_conf('DEFAULT_CHARSET'), mode='a+')
         padding = len("[{}] [     ]".format(datetime.now().strftime(get_conf('DEFAULT_LOG_TIMESTAMP')))) * " "
         queue = dict(self._queue['err'])
         queue.update(self._queue['std'])
         for msg in sorted(queue.keys()):
+            # noinspection PyTypeChecker
             msg_lines = queue[msg][1].splitlines()
+            # noinspection PyTypeChecker
             print(
                 "[{date}] [{level}] {message}".format(
                     date=datetime.now().strftime(get_conf('DEFAULT_LOG_TIMESTAMP')),
