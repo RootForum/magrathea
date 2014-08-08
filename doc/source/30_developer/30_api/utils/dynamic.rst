@@ -49,6 +49,8 @@ class. It not only provides dynamically generated :py:func:`property` attributes
 :py:class:`dict` instance, allowing to access all attribute values by using their names as keys. Furthermore,
 attributes are dynamically created, updated or deleted when the object is manipulated via its dictionary interface.
 
+In addition, the :py:class:`~magrathea.utils.dynamic.Dynamic` class allows for registering hook methods or
+functions, which can be used to manipulate the item setting and deletion behaviour.
 
 .. autoclass:: magrathea.utils.dynamic.DynamicIterable
    :members:
@@ -75,3 +77,19 @@ attributes are dynamically created, updated or deleted when the object is manipu
    >>> hasattr(obj, 'fuu')
    True
 
+
+**Hooks example**::
+
+   from magrathea.utils.dynamic import DynamicIterable
+   class MyIterable(DynamicIterable):
+
+       def __init__(self, dict=None, **kwargs):
+           self.register_hook('pre-set', my_hook)
+           self.register_hook('pre-get', my_hook)
+           super(MyIterable, self).__init__(dict=dict, **kwargs)
+
+       def my_hook(self, key, value)
+           return key.upper(), value
+
+
+This example demonstrates how one can render the DynamicIterable's keys case-agnostic.

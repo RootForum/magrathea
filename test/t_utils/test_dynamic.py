@@ -117,3 +117,24 @@ class TestMagratheaUtilsDynamic(TestCase):
         d = {'test': 123}
         obj = DynamicIterable(d)
         self.assertTrue(d == obj)
+
+    def test_10(self):
+        """
+        Test Case 10:
+        Test pre-get and pre-set hooks by turning all keys to upper case.
+
+        Test is passed if keys are upper case and get / set operations work without raising an exception.
+        """
+        def my_hook(key, value):
+            return key.upper(), value
+
+        obj = DynamicIterable()
+        obj.register_hook('pre-set', my_hook)
+        obj.register_hook('pre-get', my_hook)
+        obj['foo'] = 'bar'
+        try:
+            result = obj['foo']
+        except KeyError:
+            result = False
+        self.assertTrue(result)
+        self.assertEqual(result, 'bar')
