@@ -8,6 +8,7 @@ Utility Modules
 .. toctree::
    :maxdepth: 2
 
+   compat
    convert
    dynamic
    file

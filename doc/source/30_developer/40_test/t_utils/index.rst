@@ -8,6 +8,7 @@ Utility Modules Unit Tests
 .. toctree::
    :maxdepth: 2
 
+   t_compat
    t_convert
    t_dynamic
    t_file
