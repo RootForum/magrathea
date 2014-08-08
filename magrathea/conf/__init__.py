@@ -39,7 +39,9 @@ class ApplicationConf(DynamicIterable):
 
     .. note::
 
-       Only uppercase configuration values are taken into account.
+       Only uppercase configuration values are taken into account. However, when querying
+       for an item, it will also be recognized if it is in lower or mixed case since this
+       class takes care of converting all query keys to upper key before looking for them.
 
     Along with each *DEFAULT_...* configuration member, also a corresponding non-default member
     is created. E. g. alongside with *DEFAULT_CHARSET*, also the non-default *CHARSET*
@@ -65,48 +67,57 @@ class ApplicationConf(DynamicIterable):
         # ensure the constructor of the CbDynamicIterable parent side is called
         super(DynamicIterable, self).__init__(dict=None)
 
+        self.register_hook('pre-set', self.__ensure_uppercase_hook)
+        self.register_hook('pre-get', self.__ensure_uppercase_hook)
+        self.register_hook('pre-del', self.__ensure_uppercase_hook)
+        self.register_hook('pre-set', self.__ensure_defaults_not_mutable_hook)
+        self.register_hook('pre-del', self.__ensure_defaults_not_mutable_hook)
+        self.register_hook('pre-set', self.__ensure_default_create_mirror_hook)
+        self.register_hook('pre-del', self.__ensure_default_mirror_reset_hook)
+
         # convert all upper case configuration values from :py:module:`~magrathea.conf.default`
         for setting in dir(default):
             if setting.isupper():
                 self[setting] = getattr(default, setting)
-                # Create a non-default setting name for default settings
-                if setting.startswith('DEFAULT_'):
-                    self[setting[8:]] = getattr(default, setting)
 
-    def __add_property(self, name, value, doc=None):
+    @staticmethod
+    def __ensure_uppercase_hook(key, value):
         """
-        Dynamically add property to the current class object
-        """
-        fget = lambda self: self[name]
-        fset = lambda self, value: self.__setitem__(name, value)
-        setattr(self.__class__, name, property(fget=fget, fset=fset, doc=doc))
+        Hook method ensuring that all keys are kept in upper case.
 
-    def __del_property(self, name):
+        To be applied as pre-set, pre-get and pre-del hook.
         """
-        Dynamically delete property and internal representation
-        """
-        delattr(self.__class__, name)
+        return str(key).upper(), value
 
-    def __setitem__(self, key, item, **kwargs):
+    def __ensure_defaults_not_mutable_hook(self, key, value):
         """
-        Override ``__setitem__`` to make DEFAULT_ values immutable
+        Hook method ensuring ``DEFAULT`` values do not get overwritten.
+
+        To be applied as pre-set and pre-del hook.
         """
-        if key in self and key.startswith('DEFAULT_'):
+        if key.startswith('DEFAULT_') and key in self:
             raise KeyError('DEFAULT configuration settings are immutable!')
-        self.__add_property(key, item)
-        super(DynamicIterable, self).__setitem__(key, item)
+        return key, value
 
-    def __delitem__(self, key, **kwargs):
+    def __ensure_default_create_mirror_hook(self, key, value):
         """
-        Override ``__delitem__`` to make DEFAULT_ values immutable
+        Hook method ensuring for all ``DEFAULT`` values, a mutable mirror is created.
+
+        To be applied as pre-set hook.
         """
-        # Deny deletion of DEFAULT members
-        if key in self and key.startswith('DEFAULT_'):
-            raise KeyError('DEFAULT configuration settings are immutable!')
-        # For members mirroring a DEFAULT, just reset them to their DEFAULT value
-        # Only delete members which are neither DEFAULT, nor do mirror a DEFAULT.
+        if key.startswith('DEFAULT_'):
+            self[key[8:]] = value
+        return key, value
+
+    def __ensure_default_mirror_reset_hook(self, key, value):
+        """
+        Hook method ensuring that mirror values of ``DEFAULT`` entries are reset to
+        their default parent instead of really being deleted.
+
+        To be applied as pre-del hook.
+        """
         if "DEFAULT_{}".format(key) in self:
             self.__setitem__(key, self["DEFAULT_{}".format(key)])
+            return None, value
         else:
-            self.__del_property(key)
-            super(DynamicIterable, self).__delitem__(key)
+            return key, value

@@ -74,7 +74,7 @@ class TestMagratheaConf(TestCase):
     def test_06(self):
         """
         Test Case 06:
-        Test if DEFAULT_ values really are immutable by trying to overwrite DEFAULT_CHARSET (property).
+        Test if ``DEFAULT_`` values really are immutable by trying to overwrite DEFAULT_CHARSET (property).
 
         Test is passed if :py:exc:`KeyError` is raised.
         """
@@ -85,7 +85,7 @@ class TestMagratheaConf(TestCase):
     def test_07(self):
         """
         Test Case 07:
-        Test if DEFAULT_ values really are immutable by trying to overwrite DEFAULT_CHARSET (dictionary)
+        Test if ``DEFAULT_`` values really are immutable by trying to overwrite DEFAULT_CHARSET (dictionary)
 
         Test is passed if :py:exc:`KeyError` is raised.
         """
@@ -96,7 +96,7 @@ class TestMagratheaConf(TestCase):
     def test_08(self):
         """
         Test Case 08:
-        Test if DEFAULT_ values really are immutable by trying to delete DEFAULT_CHARSET (dictionary)
+        Test if ``DEFAULT_`` values really are immutable by trying to delete DEFAULT_CHARSET (dictionary)
 
         Test is passed if :py:exc:`KeyError` is raised.
         """
