@@ -58,7 +58,7 @@ class TestMagratheaUtilsCompat(TestCase):
         Test Case 03:
         Create an already existing directory with a different mode and ``exist_ok`` set to True
 
-        Test is passed if :py:exc:`OSError` is raised
+        Test is passed if no exception is raised.
         """
         td = tempfile.mkdtemp()
         mode = stat.S_IMODE(os.stat(td).st_mode)
@@ -66,9 +66,13 @@ class TestMagratheaUtilsCompat(TestCase):
             mode = 0o755
         else:
             mode = 0o700
-        with self.assertRaises(OSError):
+        flag = True
+        try:
             comp_makedirs(td, mode=mode, exist_ok=True)
+        except OSError:
+            flag = False
         shutil.rmtree(td)
+        self.assertTrue(flag)
 
     def test_04(self):
         """

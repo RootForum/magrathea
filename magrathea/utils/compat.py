@@ -30,13 +30,13 @@ def comp_makedirs(name, mode=0o777, exist_ok=False):
     """
     Compatibility wrapper for :py:func:`os.makedirs`. It behaves
     identically to the :py:func:`os.makedirs` implementation in
-    Python >=3.2, i. e. it brings the ``exist_ok`` argument back to
+    Python >=3.4.1, i. e. it brings the ``exist_ok`` argument back to
     older Python versions.
 
     .. note::
 
-       Just as the real implementation in Python >=3.2, ``exist_ok=True``
-       will not prevent an :py:exc:`OSError` being raised when the mode
+       Just as the real implementation in Python >=3.4.1, ``exist_ok=True``
+       will now also prevent an :py:exc:`OSError` being raised when the mode
        of the already existing directory differs from the to-be mode
        either submitted as argument or taken from the default value.
 
@@ -44,16 +44,12 @@ def comp_makedirs(name, mode=0o777, exist_ok=False):
     :param mode: mode to be used for directory creation
     :param exist_ok: If set to ``True``, do not raise :py:exc:`OSError` when the directory already exists.
     """
-    if sys.version_info >= (3, 2, 0):
+    if sys.version_info >= (3, 4, 1):
         # noinspection PyArgumentList
         os.makedirs(name, mode=mode, exist_ok=exist_ok)
     else:
-        if os.path.exists(name):
-            real_mode = stat.S_IMODE(os.stat(name).st_mode)
-            if exist_ok and (real_mode == mode):
-                return
-            else:
-                raise OSError(errno.EEXIST, os.strerror(errno.EEXIST), name)
+        if os.path.exists(name) and exist_ok:
+            return
         else:
             os.makedirs(name, mode=mode)
 
