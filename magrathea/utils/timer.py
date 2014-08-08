@@ -26,6 +26,7 @@ def counter():
     if sys.version_info >= (3, 3, 0):
         return time.perf_counter()
     else:
+        # TODO: Check implementation for Mac, since unit test randomly fails
         if sys.platform.startswith('win32'):
             return time.clock()
         else:
