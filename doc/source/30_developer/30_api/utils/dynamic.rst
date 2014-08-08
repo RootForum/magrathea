@@ -78,7 +78,9 @@ functions, which can be used to manipulate the item setting and deletion behavio
    True
 
 
-**Hooks example**::
+**Hooks example:**
+
+.. code-block:: python
 
    from magrathea.utils.dynamic import DynamicIterable
    class MyIterable(DynamicIterable):
