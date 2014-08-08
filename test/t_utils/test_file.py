@@ -22,12 +22,14 @@ class TestMagratheaUtilsFile(TestCase):
         Test Case 01:
         Try opening an existing file using the :py:func:`magrathea.utils.file.open_file` function.
 
-        Test is passed if content can be read from file object and meets expectation.
+        Test is passed if a deprecation warning is raised, content can be read from file object
+        and meets expectation.
         """
         fp, name = tempfile.mkstemp()
         os.write(fp, b"test string")
         os.close(fp)
-        fd = open_file(name, 'r')
+        with self.assertWarns(DeprecationWarning):
+            fd = open_file(name, 'r')
         result = fd.read()
         fd.close()
         os.unlink(name)

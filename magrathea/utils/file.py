@@ -8,6 +8,7 @@
 """
 import os
 import sys
+import warnings
 from ..conf import get_conf
 
 
@@ -15,10 +16,22 @@ def open_file(file, mode='r', encoding=None):
     """
     Open a file and return a corresponding file object
 
+    .. warning::
+
+       This function is considered deprecated and will be removed
+       in future versions of Magrathea.
+       Use :py:func:`magrathea.utils.compat.comp_open` instead!
+
     :param str file: pathname of the file to be opened
     :param str mode: specifies the mode in which the file is opened
     :return: file object
     """
+    warnings.warn(
+        "The `file.open_file` function has been replaced by"
+        "`compat.comp_open` and will be removed in future versions."
+        "Consider using `compat.comp_open` instead of `file.open_file`.",
+        category=DeprecationWarning
+    )
     if sys.version_info < (3, 0, 0):
         return open(file, mode=mode)
     else:
