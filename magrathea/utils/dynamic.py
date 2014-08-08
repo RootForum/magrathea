@@ -60,18 +60,20 @@ class DynamicIterable(UserDict, object):
         'post-set': [],
         'pre-get': [],
         'post-get': [],
-        'pre-delete': [],
-        'post-delete': []
+        'pre-del': [],
+        'post-del': []
     }
 
     def __init__(self, dict=None, **kwargs):
+        for hook in self._hooks.keys():
+            self._hooks[hook] = []
         super(DynamicIterable, self).__init__(dict=dict, **kwargs)
 
     def register_hook(self, hook_type, method):
         """
         Register a hook within the corresponding hook queue.
 
-        :param str hook_type: one of `pre-set`, `post-set`, `pre-delete`, `post-delete`,
+        :param str hook_type: one of `pre-set`, `post-set`, `pre-del`, `post-del`,
                               `pre-get`, `post-get`
         :param method: reference to a method or function taking two arguments (key, value)
                        and returning exactly this tuple (however, with different content if
@@ -84,7 +86,7 @@ class DynamicIterable(UserDict, object):
         """
         Run all hooks registered to the chain of a specific hook type.
 
-        :param str hook_type: one of `pre-set`, `post-set`, `pre-delete`, `post-delete`, `pre-get`, `post-get`
+        :param str hook_type: one of `pre-set`, `post-set`, `pre-del`, `post-del`, `pre-get`, `post-get`
         :param key: initial value for `key`
         :param value: initial value for `value`
         :returns: tuple of key and value, updated by hooks.
@@ -115,7 +117,7 @@ class DynamicIterable(UserDict, object):
     def __setitem__(self, key, item, **kwargs):
         """
         Overrides default ``__setitem__`` method. Functionality is identical, except a property with
-        the key name is created or updated.
+        the key name is created or updated, and corresponding pre-set and post-set hooks are run.
         """
         key, item = self.__run_hooks('pre-set', key, item)
         self.__add_property(key, item)
@@ -125,12 +127,13 @@ class DynamicIterable(UserDict, object):
     def __delitem__(self, key, **kwargs):
         """
         Overrides default ``__delitem__`` method. Functionality is identical, the property with
-        the key name is deleted.
+        the key name is deleted and corresponding pre-del and post-del hooks are run.
         """
-        key, item = self.__run_hooks('pre-delete', key, self[key])
-        self.__del_property(key)
-        super(DynamicIterable, self).__delitem__(key)
-        self.__run_hooks('post-delete', key, item)
+        key, item = self.__run_hooks('pre-del', key, self[key])
+        if key in self:
+            self.__del_property(key)
+            super(DynamicIterable, self).__delitem__(key)
+        self.__run_hooks('post-del', key, item)
 
     def __getitem__(self, key):
         """
@@ -141,3 +144,21 @@ class DynamicIterable(UserDict, object):
         item = super(DynamicIterable, self).__getitem__(key)
         key, item = self.__run_hooks('post-get', key, item)
         return item
+
+    def __contains__(self, key):
+        """
+        Overrides default ``__contains__`` method. Function is identical, except the pre-get
+        hooks are being executed.
+        """
+        key, item = self.__run_hooks('pre-get', key, None)
+        return super(DynamicIterable, self).__contains__(key)
+
+    def __getattr__(self, key):
+        """
+        Overrides default ``__getattr__`` method. Function is identical, except the pre-get
+        hooks are being executed.
+        """
+        if key in self:
+            return self[key]
+        else:
+            raise AttributeError
