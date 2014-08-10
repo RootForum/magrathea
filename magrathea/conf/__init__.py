@@ -66,13 +66,13 @@ class ApplicationConf(DynamicIterable):
         # For Python 2 Compatibility, super() cannot be used
         # inside a decorated class :-(
         DynamicIterable.__init__(self)
-        self.register_hook('pre-set', self._ensure_uppercase_hook)
-        self.register_hook('pre-get', self._ensure_uppercase_hook)
-        self.register_hook('pre-del', self._ensure_uppercase_hook)
-        self.register_hook('pre-set', self._ensure_defaults_not_mutable_hook)
-        self.register_hook('pre-del', self._ensure_defaults_not_mutable_hook)
-        self.register_hook('pre-set', self._ensure_default_create_mirror_hook)
-        self.register_hook('pre-del', self._ensure_default_mirror_reset_hook)
+        self.register_hook('pre-set', self._hook_uppercase)
+        self.register_hook('pre-get', self._hook_uppercase)
+        self.register_hook('pre-del', self._hook_uppercase)
+        self.register_hook('pre-set', self._hook_defaults_not_mutable)
+        self.register_hook('pre-del', self._hook_defaults_not_mutable)
+        self.register_hook('pre-set', self._hook_default_create_mirror)
+        self.register_hook('pre-del', self._hook_default_mirror_reset)
 
         # convert all upper case configuration values from :py:module:`~magrathea.conf.default`
         for setting in dir(default):
@@ -80,7 +80,7 @@ class ApplicationConf(DynamicIterable):
                 self[setting] = getattr(default, setting)
 
     @staticmethod
-    def _ensure_uppercase_hook(key, value):
+    def _hook_uppercase(key, value):
         """
         Hook method ensuring that all keys are kept in upper case.
 
@@ -88,7 +88,7 @@ class ApplicationConf(DynamicIterable):
         """
         return str(key).upper(), value
 
-    def _ensure_defaults_not_mutable_hook(self, key, value):
+    def _hook_defaults_not_mutable(self, key, value):
         """
         Hook method ensuring ``DEFAULT`` values do not get overwritten.
 
@@ -98,7 +98,7 @@ class ApplicationConf(DynamicIterable):
             raise KeyError('DEFAULT configuration settings are immutable!')
         return key, value
 
-    def _ensure_default_create_mirror_hook(self, key, value):
+    def _hook_default_create_mirror(self, key, value):
         """
         Hook method ensuring for all ``DEFAULT`` values, a mutable mirror is created.
 
@@ -108,7 +108,7 @@ class ApplicationConf(DynamicIterable):
             self[key[8:]] = value
         return key, value
 
-    def _ensure_default_mirror_reset_hook(self, key, value):
+    def _hook_default_mirror_reset(self, key, value):
         """
         Hook method ensuring that mirror values of ``DEFAULT`` entries are reset to
         their default parent instead of really being deleted.
