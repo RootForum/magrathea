@@ -42,5 +42,6 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   30_api/index
-   40_test/index
+   30_model/index
+   40_api/index
+   50_test/index

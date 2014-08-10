@@ -1,0 +1,53 @@
+@startuml
+
+package collections {
+    interface UserDict {
+        +data: dict
+    }
+}
+
+package builtins {
+    class object
+}
+
+package magrathea.utils.dynamic {
+    abstract class DynamicIterable {
+        #_hooks : dict
+        +register_hook(chain, hook) : void
+        -__run_hooks(self, hook_type, key, value) : void
+        -__add_property(self, name, value, doc=None) : void
+        -__del_property(self, name) : void
+        -__setitem__(self, key, item, **kwargs) : void
+        -__delitem__(self, key, **kwargs) : void
+        -__getitem__(self, key) : item
+        -__contains__(self, key) : bool
+        -__getattr__(self, key) : item
+    }
+}
+
+package magrathea.conf {
+    class ApplicationConf {
+        @Singleton
+        #_hook_uppercase(key, value) : tuple(key, value)
+        #_hook_defaults_not_mutable(self, key, value) : tuple(key, value)
+        #_hook_default_create_mirror(self, key, value) : tuple(key, value)
+        #_hook_default_mirror_reset(self, key, value) : tuple(key, value)
+    }
+}
+
+package magrathea.core.cache {
+    class Cache {
+        @Singleton
+        #_hook_get_sync(self, key, value) : tuple(key, value)
+        #_hook_set_sync(self, key, value):
+        #_hook_del_sync(self, key, value):
+        -__repr__(self):
+    }
+}
+
+UserDict <|-- DynamicIterable
+object <|-- DynamicIterable
+DynamicIterable <|-- ApplicationConf
+DynamicIterable <|-- Cache
+
+@enduml
