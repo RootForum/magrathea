@@ -100,7 +100,7 @@ class DynamicIterable(UserDict, object):
         """
         Dynamically add property to the current class object
         """
-        fget = lambda self: self[name]
+        fget = lambda self: self.__getattr__(name)
         fset = lambda self, value: self.__setitem__(name, value)
         setattr(self.__class__, name, property(fget=fget, fset=fset, doc=doc))
 
