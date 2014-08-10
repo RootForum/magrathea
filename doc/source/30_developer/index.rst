@@ -33,6 +33,7 @@ Specification
 
    20_specification/structure
    20_specification/planetconf
+   20_specification/cache
 
 
 API Documentation

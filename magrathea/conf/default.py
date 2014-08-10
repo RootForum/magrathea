@@ -27,6 +27,9 @@ DEFAULT_CHARSET = 'utf-8'
 #: Default location for templates
 DEFAULT_TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates')
 
+#: Default :py:mod:`pickle` protocol to be used
+DEFAULT_PICKLE_PROTOCOL = 2
+
 
 # LOGGING
 #########
