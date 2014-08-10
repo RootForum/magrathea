@@ -134,9 +134,10 @@ class Cache(DynamicIterable):
            triggered.
         """
         db = shelve.open(self._db_file, flag='c', protocol=self._protocol, writeback=True)
-        for key, value in db.items():
-            self[key] = value
+        temp_dict = dict(db.items())
         db.close()
+        for key, value in temp_dict.items():
+            self[key] = value
         return DynamicIterable.__repr__(self)
 
     def _hook_get_sync(self, key, value):
@@ -149,10 +150,12 @@ class Cache(DynamicIterable):
         if key not in self.data:
             db = shelve.open(self._db_file, flag='c', protocol=self._protocol, writeback=True)
             try:
-                DynamicIterable.__setitem__(self, key, db[key])
+                data = db[key]
             except KeyError:
-                pass
+                data = None
             db.close()
+            if data:
+                self.__setitem__(self, key, data)
         return key, value
 
     def _hook_set_sync(self, key, value):
