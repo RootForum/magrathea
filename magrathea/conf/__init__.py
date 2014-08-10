@@ -54,7 +54,7 @@ class ApplicationConf(DynamicIterable):
        *DEFAULT_* member. Deleting them only resets them to their original DEFAULT value.
 
     This class is implemented following the singleton pattern. Therefore,
-    in order to getting a reference to the library, the
+    in order to getting a reference to the class' instance, the
     :py:meth:`~magrathea.utils.singleton.Singleton.get_instance` method has to be used.
 
     Example::
@@ -62,18 +62,17 @@ class ApplicationConf(DynamicIterable):
        configuration = ApplicationConf.get_instance()
     """
 
-    def __init__(self, *args, **kwargs):
-
-        # ensure the constructor of the CbDynamicIterable parent side is called
-        super(DynamicIterable, self).__init__(dict=None)
-
-        self.register_hook('pre-set', self.__ensure_uppercase_hook)
-        self.register_hook('pre-get', self.__ensure_uppercase_hook)
-        self.register_hook('pre-del', self.__ensure_uppercase_hook)
-        self.register_hook('pre-set', self.__ensure_defaults_not_mutable_hook)
-        self.register_hook('pre-del', self.__ensure_defaults_not_mutable_hook)
-        self.register_hook('pre-set', self.__ensure_default_create_mirror_hook)
-        self.register_hook('pre-del', self.__ensure_default_mirror_reset_hook)
+    def __init__(self):
+        # For Python 2 Compatibility, super() cannot be used
+        # inside a decorated class :-(
+        DynamicIterable.__init__(self)
+        self.register_hook('pre-set', self._ensure_uppercase_hook)
+        self.register_hook('pre-get', self._ensure_uppercase_hook)
+        self.register_hook('pre-del', self._ensure_uppercase_hook)
+        self.register_hook('pre-set', self._ensure_defaults_not_mutable_hook)
+        self.register_hook('pre-del', self._ensure_defaults_not_mutable_hook)
+        self.register_hook('pre-set', self._ensure_default_create_mirror_hook)
+        self.register_hook('pre-del', self._ensure_default_mirror_reset_hook)
 
         # convert all upper case configuration values from :py:module:`~magrathea.conf.default`
         for setting in dir(default):
@@ -81,7 +80,7 @@ class ApplicationConf(DynamicIterable):
                 self[setting] = getattr(default, setting)
 
     @staticmethod
-    def __ensure_uppercase_hook(key, value):
+    def _ensure_uppercase_hook(key, value):
         """
         Hook method ensuring that all keys are kept in upper case.
 
@@ -89,7 +88,7 @@ class ApplicationConf(DynamicIterable):
         """
         return str(key).upper(), value
 
-    def __ensure_defaults_not_mutable_hook(self, key, value):
+    def _ensure_defaults_not_mutable_hook(self, key, value):
         """
         Hook method ensuring ``DEFAULT`` values do not get overwritten.
 
@@ -99,7 +98,7 @@ class ApplicationConf(DynamicIterable):
             raise KeyError('DEFAULT configuration settings are immutable!')
         return key, value
 
-    def __ensure_default_create_mirror_hook(self, key, value):
+    def _ensure_default_create_mirror_hook(self, key, value):
         """
         Hook method ensuring for all ``DEFAULT`` values, a mutable mirror is created.
 
@@ -109,7 +108,7 @@ class ApplicationConf(DynamicIterable):
             self[key[8:]] = value
         return key, value
 
-    def __ensure_default_mirror_reset_hook(self, key, value):
+    def _ensure_default_mirror_reset_hook(self, key, value):
         """
         Hook method ensuring that mirror values of ``DEFAULT`` entries are reset to
         their default parent instead of really being deleted.

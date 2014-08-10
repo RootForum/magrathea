@@ -54,19 +54,15 @@ class DynamicIterable(UserDict, object):
     :param kwargs:    keyword arguments to be transformed into dictionary data
     """
 
-    #: hooks
-    _hooks = {
-        'pre-set': [],
-        'post-set': [],
-        'pre-get': [],
-        'post-get': [],
-        'pre-del': [],
-        'post-del': []
-    }
-
     def __init__(self, dict=None, **kwargs):
-        for hook in self._hooks.keys():
-            self._hooks[hook] = []
+        self._hooks = {
+            'pre-set': [],
+            'post-set': [],
+            'pre-get': [],
+            'post-get': [],
+            'pre-del': [],
+            'post-del': []
+        }
         super(DynamicIterable, self).__init__(dict=dict, **kwargs)
 
     def register_hook(self, hook_type, method):
