@@ -8,4 +8,5 @@ Magrathea Core Modules Unit Tests
 .. toctree::
    :maxdepth: 2
 
+   t_cache
    t_template

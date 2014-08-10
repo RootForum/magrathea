@@ -8,4 +8,5 @@ Magrathea Core Modules
 .. toctree::
    :maxdepth: 2
 
+   cache
    template
