@@ -99,6 +99,16 @@ class TestMagratheaCoreTemplate(TestCase):
 
         Test is passed if deployment doesn't raise exception and all expected files exist.
         """
+        def _filter(item):
+            _file_map = {
+                'makefile': 'Makefile',
+                'cmakelists.txt': 'CMakeLists.txt',
+                'readme': 'README'
+            }
+            if item in _file_map:
+                return _file_map[item]
+            return item
+
         td = tempfile.mkdtemp()
         obj = Template(template='planet', path=td)
         obj.deploy()
@@ -114,9 +124,9 @@ class TestMagratheaCoreTemplate(TestCase):
                 flag = flag and os.path.exists(os.path.join(obj.path, directory))
         if cp.has_section('files'):
             for file in cp.options('files'):
-                flag = flag and os.path.exists(os.path.join(obj.path, file))
+                flag = flag and os.path.exists(os.path.join(obj.path, _filter(file)))
         if cp.has_section('binaries'):
             for binary in cp.options('binaries'):
-                flag = flag and os.path.exists(os.path.join(obj.path, binary))
+                flag = flag and os.path.exists(os.path.join(obj.path, _filter(binary)))
         shutil.rmtree(td)
         self.assertTrue(flag)
