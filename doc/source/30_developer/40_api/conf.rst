@@ -53,6 +53,8 @@ Core Settings
 
 .. autodata:: magrathea.conf.default.DEFAULT_TEMPLATE_PATH
 
+.. autodata:: magrathea.conf.default.DEFAULT_PLANET_TEMPLATE
+
 .. autodata:: magrathea.conf.default.DEFAULT_PICKLE_PROTOCOL
 
 
