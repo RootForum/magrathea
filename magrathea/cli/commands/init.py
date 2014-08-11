@@ -32,7 +32,7 @@ class InitCommand(BaseCommand, File):
 
     def handle(self):
         """Command handler for the init command"""
-        if not self.get_command_argument('no-purge'):
+        if not self.get_command_argument('no_purge'):
             self.log_debug("purging destination directory {}".format(self._working_directory))
             try:
                 for item in os.listdir(self._working_directory):
