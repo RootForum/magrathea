@@ -51,7 +51,7 @@ class BaseCommand(object):
         if self.get_global_argument('dir'):
             self._working_directory = self.get_global_argument('dir')
         else:
-            self._working_directory = os.path.normpath(os.path.curdir)
+            self._working_directory = os.path.normpath(os.getcwd())
 
     def get_global_argument(self, name):
         """Get a global argument value"""

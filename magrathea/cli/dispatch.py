@@ -27,7 +27,8 @@ class CommandDispatcher(object):
             {
                 'help': 'Magrathea working directory (defaults to current work directory)',
                 'action': 'store',
-                'metavar': '<path>'
+                'metavar': '<path>',
+                'default': os.getcwd()
             }
         ),
         (
