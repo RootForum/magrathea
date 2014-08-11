@@ -6,6 +6,7 @@
     :copyright: Copyright 2014 by the RootForum.org team, see AUTHORS.
     :license: MIT License, see LICENSE for details.
 """
+import os
 import shelve
 from ..conf import get_conf
 from ..utils.singleton import Singleton
@@ -103,6 +104,65 @@ class Cache(DynamicIterable):
         self.register_hook('pre-get', self._hook_get_sync)
         self.register_hook('post-set', self._hook_set_sync)
         self.register_hook('post-del', self._hook_del_sync)
+
+    def sanitize(self):
+        """
+        Try repairing the backing database file by deleting it and re-syncing
+        available cache content into the file. Only data already present within
+        the cache object's ``self.data`` dictionary can be re-synced into the
+        database. This usually is the case for all data that has been inserted,
+        updated or queried through this cache object instance.
+
+        .. warning::
+
+           This will most probably lead to a loss of cached data, since the
+           cache object usually behaves lazily. Therefore, data only present
+           within the database and not yet loaded will be lost.
+        """
+        os.unlink(self._db_file)
+        db = shelve.open(self._db_file, flag='n', protocol=self._protocol, writeback=True)
+        for key, value in self.data.items():
+            db[key] = value
+        db.close()
+
+    def erase(self):
+        """
+        Perform a hard erase of the contents of the cache. This is done by
+        deleting the backing database file, re-creating it and removing all
+        items from ``self.data``, plus deleting the corresponding properties.
+
+        This method also works when the backing database file itself is broken
+        (e. g. has become inconsistent or the db format has changed). This is
+        due to the fact that this method works around the normal internal data
+        handling procedures (therefore referred to as *hard erase*).
+
+        .. warning::
+
+           This method should be considered as a last resort, when no other
+           means for accessing the data do work. In normal operation, you
+           will want to use :py:meth:`~magrathea.core.cache.Cache.reset` if
+           you intend to empty a cache entirely.
+        """
+        self.sanitize()
+        items = [item for item in self.data.keys()]
+        for item in items:
+            del self[item]
+
+    def reset(self):
+        """
+        Perform a soft erase of the contents of the cache. This is done by
+        deleting all items from the cache object, using its standard delete
+        proceedings (including hooks for syncing deletion to the backend).
+
+        Other than :py:meth:`~magrathea.core.cache.Cache.erase`, this method
+        does not touch the database file, but sticks completely to using the
+        external :py:func:`del` interface. However, this also means this
+        method will fail in cases the database file is damaged or otherwise
+        not properly accessible (e. g. due to format changes).
+        """
+        items = [item for item in self.keys()]
+        for item in items:
+            del self[item]
 
     def __repr__(self):
         """

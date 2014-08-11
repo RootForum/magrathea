@@ -115,3 +115,61 @@ class TestMagratheaCoreCache(TestCase):
         self.assertNotIn('test', obj3)
         self.assertFalse(hasattr(obj3, 'test'))
         del obj3
+
+    def test_06(self):
+        """
+        Test Case 06:
+        Test :py:meth:`~magrathea.core.cache.Cache.reset` method.
+
+        Test is passed if :py:class:`~magrathea.core.cache.Cache` object is reset to an empty state.
+        """
+        global db_name
+        obj1 = Cache.get_instance(db_name)
+        obj1['test'] = 'test data'
+        del obj1
+        obj2 = Cache.get_instance(db_name)
+        self.assertIn('test', obj2)
+        obj2.reset()
+        self.assertDictEqual(dict(obj2), {})
+        del obj2
+        obj3 = Cache.get_instance(db_name)
+        self.assertEqual(dict(obj3), {})
+        del obj3
+
+    def test_07(self):
+        """
+        Test Case 07:
+        Test :py:meth:`~magrathea.core.cache.Cache.sanitize` method.
+
+        Test is passed if :py:class:`~magrathea.core.cache.Cache` object still has the same content afterwards.
+        """
+        global db_name
+        obj1 = Cache.get_instance(db_name)
+        obj1['test'] = 'test data'
+        del obj1
+        obj2 = Cache.get_instance(db_name)
+        obj2.sanitize()
+        del obj2
+        obj3 = Cache.get_instance(db_name)
+        self.assertIn('test', obj3)
+        del obj3
+
+    def test_08(self):
+        """
+        Test Case 08:
+        Test :py:meth:`~magrathea.core.cache.Cache.erase` method.
+
+        Test is passed if :py:class:`~magrathea.core.cache.Cache` object is reset to an empty state.
+        """
+        global db_name
+        obj1 = Cache.get_instance(db_name)
+        obj1['test'] = 'test data'
+        del obj1
+        obj2 = Cache.get_instance(db_name)
+        self.assertIn('test', obj2)
+        obj2.erase()
+        self.assertDictEqual(dict(obj2), {})
+        del obj2
+        obj3 = Cache.get_instance(db_name)
+        self.assertEqual(dict(obj3), {})
+        del obj3
