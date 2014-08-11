@@ -46,6 +46,16 @@ Unit Tests for :py:mod:`magrathea.cli.commands`
 .. module:: test.t_cli.t_commands
    :synopsis: unit tests for :py:mod:`magrathea.cli.commands`
 
+Unit Tests for :py:mod:`magrathea.cli.commands.init`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. module:: test.t_cli.t_commands.test_init
+   :synopsis: unit tests for :py:mod:`magrathea.cli.commands.init`
+
+.. py:currentmodule:: test.t_cli.t_commands.test_init
+
+.. autoclass:: test.t_cli.t_commands.test_init.TestMagratheaCliCommandsInit
+   :members:
 
 Unit Tests for :py:mod:`magrathea.cli.commands.version`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

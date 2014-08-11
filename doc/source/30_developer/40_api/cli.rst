@@ -124,6 +124,18 @@ Existing Command Line Commands
 .. module:: magrathea.cli.commands
    :synopsis: package containing all command line commands
 
+Init Command
+^^^^^^^^^^^^
+
+.. module:: magrathea.cli.commands.init
+   :synopsis: module implementing the init command
+
+.. py:currentmodule:: magrathea.cli.commands.init
+
+.. autoclass:: magrathea.cli.commands.init.InitCommand
+   :members:
+   :undoc-members:
+
 Version Command
 ^^^^^^^^^^^^^^^
 
