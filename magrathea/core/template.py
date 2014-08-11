@@ -37,6 +37,13 @@ class Template(File):
     :param str path:        destination for the template deployment
     """
 
+    #: Map of file names the input process will get wrong
+    _file_map = {
+        'makefile': 'Makefile',
+        'cmakelists.txt': 'CMakeLists.txt',
+        'readme': 'README'
+    }
+
     #: Name of the template to work with
     _template = None
 
@@ -166,11 +173,16 @@ class Template(File):
                 ini['dirs'].append(key)
         if conf.has_section('files'):
             for key in conf.options('files'):
-                ini['files'].append(key)
+                ini['files'].append(self.__remap(key))
         if conf.has_section('binaries'):
             for key in conf.options('binaries'):
-                ini['binaries'].append(key)
+                ini['binaries'].append(self.__remap(key))
         if isinstance(self._ini, dict):
             self._ini.update(ini)
         else:
             self._ini = ini
+
+    def __remap(self, item):
+        if item in self._file_map:
+            return self._file_map[item]
+        return item
