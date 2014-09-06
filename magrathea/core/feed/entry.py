@@ -10,6 +10,7 @@ import base64
 import calendar
 import time
 from ...utils.convert import to_str, to_bytes
+from .info import FeedInfo
 
 
 def get_entry_id(entry):
@@ -148,7 +149,6 @@ class Entry(object):
 
     @feed.setter
     def feed(self, feed):
-        from .feed import FeedInfo
         if isinstance(feed, FeedInfo):
             self._feed = feed
 

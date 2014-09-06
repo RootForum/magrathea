@@ -11,38 +11,7 @@ import feedparser
 from ..exceptions import FeedGoneError, FeedMovedError
 from ...utils.convert import to_bytes, to_str
 from .entry import Entry
-
-
-class FeedInfo(object):
-    """
-    A simple namespace object for passing information to an entry
-    """
-
-    def __init__(self, author, title, uri, version):
-        self._author = author
-        self._title = title
-        self._uri = uri
-        self._type = version
-
-    @property
-    def author(self):
-        """Author of the feed"""
-        return self._author
-
-    @property
-    def title(self):
-        """Title of the feed"""
-        return self._title
-
-    @property
-    def uri(self):
-        """URI of the feed"""
-        return self._uri
-
-    @property
-    def type(self):
-        """Type of the feed"""
-        return self._type
+from .info import FeedInfo
 
 
 class Feed(object):
