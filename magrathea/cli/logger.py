@@ -60,10 +60,8 @@ class Logger(object):
         self._type = get_conf('DEFAULT_LOG_TYPE')
         self._logfile = get_conf('DEFAULT_LOG_FILE')
         self._facility = get_conf('DEFAULT_LOG_FACILITY')
-        self._queue = {
-            'std': {},
-            'err': {}
-        }
+        self._queue = None
+        self._init_queue()
         self._fp_std = None
         self._fp_err = None
 
@@ -123,12 +121,20 @@ class Logger(object):
         elif self._type == 'syslog':
             syslog.closelog()
 
+    def _init_queue(self):
+        """Initialise message queue"""
+        self._queue = {
+            'std': {},
+            'err': {}
+        }
+
     def _flush(self):
         """Flush log queue to the log channel"""
         if self._type == 'term':
             self._flush_term()
         elif self._type == 'file':
             self._flush_file()
+        self._init_queue()
 
     def _flush_term(self):
         """Flush implementation for terminal logging"""

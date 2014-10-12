@@ -67,6 +67,10 @@ class BaseCommand(object):
         else:
             return None
 
+    def log(self, level, message):
+        """Logging shortcut for convenience"""
+        self._logger.log(level, message)
+
     def log_error(self, message):
         """Error logging short cut method for convenience"""
         self._logger.log_error(message)
